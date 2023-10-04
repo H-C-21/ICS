@@ -1,8 +1,3 @@
-// const carSchema = require("./models/Car.js");
-// const userSchema = require("./models/Customer.js");
-// const enrollmentSchema = require("./models/Enrollments.js");
-
-// const connectDb = require('./Data/db.js');
 
 const express = require('express');
 const app = express();
@@ -35,21 +30,6 @@ const servers = [
 ]
 
 let currentServer = 0;
-
-// app.get('/information', async (req, res, next) => {
-
-    
-
-//     const response = await axios({
-//         url: `${server}/information`,
-//         method: method,
-//         headers: headers,
-//         data: body
-//     });
-
-//     res.send(response.data)
-
-//     })
 
     const handler = async (req, res) =>{
  
