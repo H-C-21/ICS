@@ -83,7 +83,7 @@ app.get('/information', async (req, res, next) => {
     })
 
 
-const PORT = 6000;
+const PORT = 3002;
 app.listen(PORT, (req, res) => {
         console.log(`server is listening on PORT number ${PORT}`);
 })

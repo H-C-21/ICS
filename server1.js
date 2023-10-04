@@ -78,12 +78,12 @@ app.get('/information', async (req, res, next) => {
         age: 20,
         server: "Server 1"
      }
-    
+        console.log(data)
         return res.json(data)
     })
 
 
-const PORT = 7000;
+const PORT = 3000;
 app.listen(PORT, (req, res) => {
         console.log(`server is listening on PORT number ${PORT}`);
 })

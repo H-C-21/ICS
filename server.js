@@ -8,6 +8,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require('cors');
+const axios = require('axios');
 
 // connectDb();
 
@@ -27,77 +28,57 @@ app.use((req, res, next) => {
 }))
 
 
-// Enable CORS for your frontend
-// app.use(cors({
-//   origin: 'http://localhost:5173',
-//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//   credentials: true,  // This allows cookies to be sent cross-origin
-// }));
+const servers = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:3002"
+]
 
-// app.post('/login', async (req,res, next) => {
+let currentServer = 0;
 
-//     const user = userSchema.findOne({email: req.body.email})
-//     if(user){
-//         if(user.password = req.body.password){
-//             return res.json('logged in')
-//         }
-//     }
+// app.get('/information', async (req, res, next) => {
 
-
-// })
-
-
-// app.get('/getcars', async (req, res, next) => {
-
-//     const all = {}
-//     const data = await carSchema.find(all);
-//     console.log(data) 
-//     res.json(data);
-
-// });
-
-// app.get('/getuserorders', async (req, res, next) => {
-
-//     const enrollments = await enrollmentSchema.find({ user: 'harshit'})
-//     return res.json(enrollments)
-
-// });
-
-// app.post('/setstatus', async (req, res, next) => {
-
-
-// });
-
-
-// app.post('/newenrollment', async (req, res, next) => {
-//     const person = new enrollmentSchema({
-//         user: "harshit",
-//         make: req.body.make,
-//         model: req.body.model,
-//         year: req.body.year,
-//         vin: req.body.vin,
-//         status: false
-//       });
-//       person.save();
-
-//       return res.json({message:"User Created"})
-        
-// });
-
-
-app.get('/information', async (req, res, next) => {
-    const data = {
-        name: "Harshit",
-        email: "charshit200@gmail.com",
-        age: 20,
-        server: "Server 1"
-     }
     
-        return res.json(data)
+
+//     const response = await axios({
+//         url: `${server}/information`,
+//         method: method,
+//         headers: headers,
+//         data: body
+//     });
+
+//     res.send(response.data)
+
+//     })
+
+    const handler = async (req, res) =>{
+ 
+        const server = servers[currentServer];
+        currentServer = (currentServer + 1) % servers.length;
+
+        const { method, url, headers, body } = req;
+     
+        try{
+            
+            const response = await axios({
+                url: `${server}${url}`,
+                method: method,
+                headers: headers,
+                data: body
+            });
+
+
+            res.send(response.data)
+        }
+        catch(err){
+            res.status(500).send("Server error!")   
+        }
+    }
+
+    app.use((req,res)=>{handler(req, res)});
+
+
+    const PORT = 8000;
+        app.listen(PORT, (req, res) => {
+            console.log(`server is listening on PORT number ${PORT}`);
     })
-
-
-const PORT = 8000;
-app.listen(PORT, (req, res) => {
-        console.log(`server is listening on PORT number ${PORT}`);
-})
